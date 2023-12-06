@@ -1,0 +1,88 @@
+spring:
+  #静态资源处理
+  web:
+    resources:
+      add-mappings: true
+      cache:
+        cachecontrol:
+          #缓存时间
+          max-age: 3600
+      chain:
+        #资源链启动缓存
+        cache: true
+        #启用资源链
+        enabled: true
+        compressed: true
+      static-locations: classpath:/static/
+
+
+  thymeleaf:
+    cache: false
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout:  10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 10000ms
+        max-idle: 200
+        min-idle: 5
+
+  rabbitmq:
+    host: 127.0.0.1
+    username: guest
+    password: guest
+    virtual-host: /
+    port: 5672
+    listener:
+      simple:
+        # 消费者最小数量
+        concurrency: 10
+        # 消费者最大数量
+        max-concurrency: 10
+        # 限制消费者每次只处理一条消息
+        prefetch: 1
+        # 是否默认启动容器
+        auto-startup: true
+        # 当消息被拒绝时，是否重新进入队列
+        default-requeue-rejected: true
+    template:
+      retry:
+        enabled: true
+        # 重试时间
+        initial-interval: 1000ms
+        max-attempts: 3
+        max-interval: 10000ms
+        multiplier: 1
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/seckill?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    username: root
+    password: root
+    hikari:
+      pool-name: DateHikariCP
+      # ???????
+      minimum-idle: 5
+      # ??????????
+      idle-timeout: 180000
+      # ?????
+      maximum-pool-size: 10
+      auto-commit: true
+      max-lifetime: 2000000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-aliases-package: com.xxxx.seckill.pojo
+
+logging:
+  level:
+    com.xxxx.seckill.mapper: debug
+
+
+
+
